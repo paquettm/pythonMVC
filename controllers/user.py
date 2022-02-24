@@ -5,37 +5,52 @@ Created on Tue Feb 22 14:59:03 2022
 user controller
 @author: Michel
 """
-from pythonMVC.models.dbcontext import MySQL
+from pythonMVC.core.DB import engine, Session, Base
+from pythonMVC.models.user import User
+from flask import Flask, request, session, g, redirect, url_for, abort, \
+     render_template, flash
+import bcrypt
+
 
 #controller for business logic
-class user:
-    __connection = None
+class user:        
     
-    def __init__(self):
-        self.__connection = MySQL.connect()
-        
-    def Login(self,user):
-        if self.__isValidLogin(user):
-            if self.__isAuthentic(user):
-                self.__authorize(user)
+    def listAll():
+        if not session.get('user_id'):
+            return redirect(url_for('login'))
+        DBsession = Session()
+        users = DBsession.query(User).all()
+        return render_template('user_list.html', users = users)
+    
+    def login():
+        DBsession = Session()
+        error = None
+        if request.method == 'POST':            
+            user = DBsession.query(User).filter(User.username == request.form['username']).first()
+            if user != None and bcrypt.checkpw(request.form['password'].encode(),user.password_hash.encode()):
+                session['user_id'] = user.user_id
+                return redirect(url_for('userHello'))
             else:
-                user.setMessage("Incorrect username and password.")
-        else:
-            user.setMessage("Please enter your username and password.")
-    
-    def __isValidLogin(self,user):
-        cursor = self.__connection.cursor()
-        cursor.execute("SELECT `id` FROM user WHERE `username`=")
-        return user.getUsername() != "" and user.getPassword() != ""
-    
-    def __isAuthentic(self,user):
-        return user.getUsername() == "root" and user.getPassword() == "password"
-    
-    def __authorize(self,user):
-        user.setMessage(user.getUsername() + " is logged in.")
-    
-    
+                error="Problem logging in!"
+        return render_template('login.html', error=error)
 
-        
-u = user
-print(MySQL.message)
+    def register():
+        DBsession = Session()
+        error = None
+        if request.method == 'POST':            
+            user = DBsession.query(User).filter(User.username == request.form['username']).first()
+            if user != None:
+                error="This username already exists. Select another one."
+            elif request.form['password'] != request.form['password_confirm']:
+                error="Passwords do not match."
+            else:
+                DBsession = Session()
+                newUser = User(request.form['username'], request.form['password'])
+                # persists data
+                DBsession.add(newUser)
+                # commit and close session
+                DBsession.commit()
+                DBsession.close()                
+                return redirect(url_for('login'))
+        return render_template('register.html', error=error)
+    

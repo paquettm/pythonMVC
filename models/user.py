@@ -7,35 +7,21 @@ user model
 """
 import bcrypt
 
-class user:
+from sqlalchemy import Column, String, Integer
+from pythonMVC.core.DB import Base
+
+class User(Base):
     
-    def __init(self):
-        pass
+    __tablename__ = 'user_table'
+
+    user_id = Column(Integer, primary_key=True)
+    username = Column(String)
+    password_hash = Column(String)
+
+    def __init__(self, username, password):
+        self.username = username
+        salt = bcrypt.gensalt()
+        password = password.encode() #encode before hashing
+        self.password_hash = bcrypt.hashpw(password,salt) 
+        
     
-    #private
-    __username = ""
-    __password = ""
-    __password_hash = ""
-    __email = ""
-    __message = ""
-    
-    #getters/accessors
-    def getUsername(self):
-        return self.__username
-    def getPassword(self):
-        return self.__password
-    def getEmail(self):
-        return self.__email
-    def getMessage(self):
-        return self.__message
-    
-    #setters
-    def setUsername(self,username):
-        self.__username = username
-    def setPassword(self,password):
-        self.__password = password
-        self.__password_hash = bcrypt.hashpw(password)   
-    def setEmail(self,email):
-        self.__email = email    
-    def setMessage(self,message):
-        self.__message = message    

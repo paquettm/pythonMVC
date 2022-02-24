@@ -4,6 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+sqlalchemy = "*"
+psycopg2-binary = "*"
+flask = "*"
+pymysql = "*"
+bcrypt = "*"
 
 [dev-packages]
 
