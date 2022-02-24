@@ -2,8 +2,4 @@
 
 ## Installation
 
-pip install:
-- sqlalchemy
-- sqlalchemy-utils
-- sqlclient
-- Flask
+Refer to pipfile
