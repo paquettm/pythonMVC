@@ -9,6 +9,9 @@ psycopg2-binary = "*"
 flask = "*"
 pymysql = "*"
 bcrypt = "*"
+cryptography = "*"
+python-dotenv = "*"
+sqlalchemy-utils = "*"
 
 [dev-packages]
 

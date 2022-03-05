@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 """
-Created on Tue Feb 22 14:59:03 2022
 user controller
-@author: Michel
+for login/register and logout
 """
 from pythonMVC.core.DB import engine, Session, Base
 from pythonMVC.models.user import User
@@ -29,10 +27,15 @@ class user:
             user = DBsession.query(User).filter(User.username == request.form['username']).first()
             if user != None and bcrypt.checkpw(request.form['password'].encode(),user.password_hash.encode()):
                 session['user_id'] = user.user_id
-                return redirect(url_for('userHello'))
+                return redirect(url_for('root'))
             else:
                 error="Problem logging in!"
         return render_template('login.html', error=error)
+
+    def logout():
+            session.pop('user_id', None)
+            flash('You were logged out')
+            return redirect(url_for('root'))
 
     def register():
         DBsession = Session()

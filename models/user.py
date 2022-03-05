@@ -22,6 +22,4 @@ class User(Base):
         self.username = username
         salt = bcrypt.gensalt()
         password = password.encode() #encode before hashing
-        self.password_hash = bcrypt.hashpw(password,salt) 
-        
-    
+        self.password_hash = bcrypt.hashpw(password,salt)
