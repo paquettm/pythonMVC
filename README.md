@@ -5,6 +5,7 @@
 1. Create your MySQL database, table, and user, for example:
 ```
 CREATE DATABASE myapplication;
+USE myapplication;
 CREATE TABLE user (
     user_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
