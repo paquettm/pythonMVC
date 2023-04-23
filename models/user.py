@@ -12,7 +12,7 @@ from pythonMVC.core.DB import Base
 
 class User(Base):
     
-    __tablename__ = 'user_table'
+    __tablename__ = 'user'
 
     user_id = Column(Integer, primary_key=True)
     username = Column(String)
