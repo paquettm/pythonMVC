@@ -13,6 +13,7 @@ CREATE TABLE user (
 CREATE USER 'myapplication_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'myapplication_password';
 ```
 Note that for this application, the table structure is mandatory.
+
 2. Pull the repository
 3. Enter the `pipenv shell`
 3. Run `pipenv install`
